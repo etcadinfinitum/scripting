@@ -1,0 +1,137 @@
+Script started on 2019-10-09 02:28:40-07:00
+]777;notify;Command completed;exit\]0;lizzy@cranberries:~/code/school/scripting/file_management\]7;file://cranberries/home/lizzy/code/school/scripting/file_management\[0;32m:) [1;35mlizzy[1;30m@[1;32mcranberries: [1;30m~/code/school/scripting/[1;36mfile_management [1;30m$[0m bash explore_collection.sh 
+A Music subdirectory exists here. If you want to use a different path, enter one now, or press enter to continue: 
+Total tracks: 4134
+
+Total artists: 129
+
+Multi-genre artists: 
+Canadian Brass
+Christopher Franke
+John Williams
+Tangerine Dream
+Vangelis
+various
+
+Multi-disk albums: 
+Backtrackin'
+Basic Beethoven
+Basic Guitar
+Basic Handel
+BASIC MOZART
+Basic Tchaikovsky
+Book of Dreams
+Brandenburg Concertos (Academy of Ancient Music feat. conductor: Christopher Hogwood)
+Concert Program
+En concert Houston-Lyon
+Jazz Collection
+Les Concerts en Chine
+Live at Red Rocks
+Live in Paris and Toronto
+Liverpool Oratorio
+Northern Exposure
+Oh What a Feeling
+Oxygène
+Physical Graffiti
+Shine On - A Collection
+Star Wars: A New Hope
+Synthesizer Greatest Hits
+The Art of Fugue - Wolfgang Rübsam
+The Best of Jethro Tull: The Anniversary Collection
+The Best of Rave
+The Best of The Doors
+Viva Santana
+Windham Hill: The First Ten Years
+Workshop of the Telescopes
+
+Multi-Genre Artists: 
+   Canadian Brass
+      classical
+      jazz-blues
+      pop-rock
+   Christopher Franke
+      electronic-synth-experimental
+      soundtrack
+   John Williams
+      classical
+      soundtrack
+   Tangerine Dream
+      electronic-synth-experimental
+      new-age
+      soundtrack
+   Vangelis
+      electronic-synth-experimental
+      soundtrack
+   various
+      classical
+      electronic-synth-experimental
+      jazz-blues
+      new-age
+      pop-rock
+      soundtrack
+
+Multi-Disk Albums:
+   Beethoven
+      Basic Beethoven
+   Blue Oyster Cult
+      Workshop of the Telescopes
+   Dave Brubeck
+      Jazz Collection
+   Eric Clapton
+      Backtrackin'
+   Handel
+      Basic Handel
+   Jean-Michel Jarre
+      En concert Houston-Lyon
+      Les Concerts en Chine
+      Oxygène
+   Jethro Tull
+      The Best of Jethro Tull: The Anniversary Collection
+   Johann Sebastian Bach
+      The Art of Fugue - Wolfgang Rübsam
+   John Tesh
+      Live at Red Rocks
+   John Williams
+      Star Wars: A New Hope
+   Led Zeppelin
+      Physical Graffiti
+   Loreena McKennitt
+      Live in Paris and Toronto
+   Mozart
+      BASIC MOZART
+   Paul McCartney
+      Liverpool Oratorio
+   Penguin Cafe Orchestra
+      Concert Program
+   Peter Frampton
+      Shine On - A Collection
+   Santana
+      Viva Santana
+   Tangerine Dream
+      Book of Dreams
+   Tchaikovsky
+      Basic Tchaikovsky
+   The Academy of Ancient Music
+      Brandenburg Concertos (Academy of Ancient Music feat. conductor: Christopher Hogwood)
+   The Doors
+      The Best of The Doors
+   various
+      Basic Guitar
+      Northern Exposure
+      Oh What a Feeling
+      Synthesizer Greatest Hits
+      The Best of Rave
+      Windham Hill: The First Ten Years
+
+Possible Duplicate Albums:
+   Greatest Hits
+      folk-world	Cat Stevens
+      pop-rock	Eurythmics
+      classical	Franz Liszt
+      classical	Gioacchino Rossini
+      pop-rock	Pat Benetar
+      pop-rock	Stray Cats
+]777;notify;Command completed;bash explore_collection.sh \]0;lizzy@cranberries:~/code/school/scripting/file_management\]7;file://cranberries/home/lizzy/code/school/scripting/file_management\[0;32m:) [1;35mlizzy[1;30m@[1;32mcranberries: [1;30m~/code/school/scripting/[1;36mfile_management [1;30m$[0m exit
+exit
+
+Script done on 2019-10-09 02:29:13-07:00

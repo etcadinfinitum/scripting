@@ -2,7 +2,7 @@
 
 function warmup() {
     echo -n "Total tracks: "
-    echo `find -type f | wc -l`
+    echo `find -type f -iname "*.ogg" | wc -l`
     
     echo -n -e "\nTotal artists: "
     echo `find -mindepth 2 -maxdepth 2 -printf '%f\n' | sort | uniq | wc -l`
@@ -37,6 +37,7 @@ function detailed() {
         find -type d -mindepth 3 -maxdepth 3 -iname "$album" | cut -d/ -f 2,3 --output-delimiter="	" | sort -k 2 | while read pair; do
             echo "      $pair"
         done
+        echo
     done
         
 }

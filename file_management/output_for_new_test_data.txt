@@ -1,0 +1,50 @@
+Script started on 2019-10-09 03:21:27-07:00
+]777;notify;Command completed;exit\]0;lizzy@cranberries:~/code/school/scripting/file_management\]7;file://cranberries/home/lizzy/code/school/scripting/file_management\[0;32m:) [1;35mlizzy[1;30m@[1;32mcranberries: [1;30m~/code/school/scripting/[1;36mfile_management [1;30m$[0m bash explore_collection.sh 
+A Music subdirectory exists here. If you want to use a different path, enter one now, or press enter to continue: test_data/Music
+Total tracks: 127
+
+Total artists: 5
+
+Multi-genre artists: 
+Bob Moses
+various
+
+Multi-disk albums: 
+The Best of Bird
+
+Multi-Genre Artists: 
+   Bob Moses
+      electronica
+      indie-rock
+   various
+      electronica
+      hiphop
+      jazz
+
+Multi-Disk Albums:
+   Charlie "Bird" Parker
+      The Best of Bird
+   Charlie Parker And His Orchestra
+      The Best of Bird
+
+Possible Duplicate Albums:
+   Battle Lines
+      electronica	Bob Moses
+      indie-rock	Bob Moses
+
+   Skelethon
+      hiphop	Aesop Rock
+      hiphop	various
+
+   The Best of Bird
+      jazz	Charlie "Bird" Parker
+      jazz	Charlie Parker And His Orchestra
+
+   Verve Remixed Vol 1
+      electronica	various
+      jazz	various
+
+]777;notify;Command completed;bash explore_collection.sh \]0;lizzy@cranberries:~/code/school/scripting/file_management\]7;file://cranberries/home/lizzy/code/school/scripting/file_management\[0;32m:) [1;35mlizzy[1;30m@[1;32mcranberries: [1;30m~/code/school/scripting/[1;36mfile_management [1;30m$[0m exit
+exit
+
+Script done on 2019-10-09 03:21:40-07:00
