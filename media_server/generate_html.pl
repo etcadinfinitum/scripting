@@ -13,10 +13,16 @@ next unless /.*\.ogg/;
 $_ =~ s/"/\\"/g;
 $path[2] =~ s/&/&amp;/g;
 $path[2] =~ s/"/&quot;/g;
+chomp($path[2]);
 $path[3] =~ s/&/&amp;/g;
-$path[3] =~ s/"/&quot;/g;
-$path[-1] =~ s/&/&amp;/g;
-$path[-1] =~ s/"/&quot;/g;
+chomp($path[3]);
+# substitute first ampersand
+$path[-1] =~ s/(^[^"']*)&/\1&amp;/g;
+# use negative lookahead to prevent substituting
+# ampersand that has already been substituted
+$path[-1] =~ s/&(?!(amp;))([^"']*$)/&amp;\2/g;
+$path[-1] =~ s/\.ogg$//g;
+chomp($path[-1]);
 # embed all features of interest into hash
 $files{$path[2]}{$path[3]}{$path[-1]} = $_;
 
@@ -43,7 +49,6 @@ END {
             }
             print "\t\t\t\t\t</table>\n\t\t\t\t</td>\n\t\t\t</tr>\n";
         }
-        print "\t\t\t\t</td>\n\t\t\t</tr>\n";
     }
     print "\t\t</table>\n\t</body>\n</html>\n";
 }

@@ -23,7 +23,7 @@ echo "$data" | cut -d/ -f 3 | uniq | while read artist; do
                 fi
                 echo -e "\t\t\t\t<td>$album</td>"
                 echo -e "\t\t\t\t<td>\n\t\t\t\t\t<table border=\"0\">"
-                echo "$data" | sed -n -r -e "s/.+\/($artist)\/($album)(\/.+\/|\/)(.+\.ogg)/\t\t\t\t\t\t<tr><td><a href=\"&\">\4<\/a><\/td><\/tr>/p"
+                echo "$data" | sed -n -r -e "s/.+\/($artist)\/($album)(\/.+\/|\/)([^\/]+)(\.ogg)/\t\t\t\t\t\t<tr><td><a href=\"&\">\4<\/a><\/td><\/tr>/p"
                 echo -e "\t\t\t\t\t</table>\n\t\t\t\t</td>"
                 echo -e "\t\t\t</tr>"
             fi
