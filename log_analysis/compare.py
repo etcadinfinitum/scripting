@@ -100,4 +100,5 @@ def main():
         for i, c in enumerate(sorted(cookies_with_missing_segments)):
             report.write('%d\t%s\t%d\t%s\n' % (i, c, len(cookies_with_missing_segments[c]), sorted(cookies_with_missing_segments[c])))
 
-main()
+if __name__=="__main__":
+    main()
