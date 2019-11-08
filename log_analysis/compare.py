@@ -96,7 +96,7 @@ def main():
         report.write('\nCookies in extra segments: %d / %d\n' % (len(cookies_with_new_segments), len(baseline_total | test_total)))
         for i, c in enumerate(sorted(cookies_with_new_segments)):
             report.write('%d\t%s\t%d\t%s\n' % (i, c, len(cookies_with_new_segments[c]), sorted(cookies_with_new_segments[c])))
-        report.write('\nCookies in extra segments: %d / %d\n' % (len(cookies_with_missing_segments), len(baseline_total | test_total)))
+        report.write('\nCookies omitted from segments: %d / %d\n' % (len(cookies_with_missing_segments), len(baseline_total | test_total)))
         for i, c in enumerate(sorted(cookies_with_missing_segments)):
             report.write('%d\t%s\t%d\t%s\n' % (i, c, len(cookies_with_missing_segments[c]), sorted(cookies_with_missing_segments[c])))
 
