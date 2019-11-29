@@ -1,0 +1,45 @@
+#!/bin/env python3
+
+import argparse
+import time
+import random
+import urllib3
+
+# Argument Parsing
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--interval', type=int, help='The frequency that data is collected (every n seconds)')
+    parser.add_argument('--duration', type=int, help='The length of time to collect data (in seconds)')
+    parser.add_argument('--url', help='The URL pointing to the simulated webserver.')
+    args = parser.parse_args()
+    # defaults + reasonable data cleaning
+    if not args.url:
+        args.url = 'http://uw1-320-13.uwb.edu:42069/stats'
+    if not args.interval or args.interval < 1:
+        args.interval = 10
+    return args
+
+def collect_data():
+    args = get_args()
+    with open('metrics.log', 'w') as log:
+        log.write('datetime:\tcount500:\tcount200:\tcount404:\n')
+    http = urllib3.PoolManager()
+    start = time.time()
+    if args.duration:
+        for i in range(args.duration // args.interval):
+            r = http.request('GET', args.url)
+            # import pdb; pdb.set_trace()
+            with open('metrics.log', 'a') as log:
+                s = ''
+                for line in r.data.decode().splitlines():
+                    # get second item
+                    log.write(line.split()[1] + '\t')
+                log.write('\n')
+            now = time.time()
+            time.sleep(args.interval - ((now - start) % args.interval))
+    else:
+        pass
+        # TODO
+
+if __name__=='__main__':
+    collect_data()
