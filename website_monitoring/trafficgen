@@ -20,9 +20,9 @@ def get_args():
         args.rps = 250
     if not args.jitter or args.jitter <= 0 or args.jitter > 1:
         args.jitter = 0.35
-    if not args.iters:
+    if not args.iters or args.iters < 1:
         args.iters = 3600
-    print(f'Args:\tIters:\t{args.iters}\n\tRPS:\t{args.rps}')
+    print('Args:\tIters:\t', args.iters, '\n\tRPS:\t', args.rps)
     return args
 
 # modulate static rate per second with jitter.
@@ -36,18 +36,22 @@ def get_rps(rps, jitter, iters):
 def generate_traffic():
     args = get_args()
     rps = get_rps(args.rps, args.jitter, args.iters)
-    args = get_args()
-    rps = get_rps(args.rps, args.jitter, args.iters)
+    print(str(rps))
     http = urllib3.PoolManager()
     start = time.time()
+    now = start
     # calls with sleep
     for it in range(args.iters):
-        # TODO: get time
-        for r in range(rps[it]):
-            http.request('HEAD', args.url)
-        el = time.time() - start
-        print(f'One second\'s worth of requests: {el}')
-        time.sleep(1.0 - (time.time() % 1.0))
+        # 200 response
+        for r in range(round(0.9*rps[it])):
+            http.request('GET', args.url)
+        # 404 response
+        for r in range(round(0.1*rps[it])):
+            http.request('GET', args.url.strip('/') + '/other')
+        # TODO: 500 response
+        now = time.time()
+        if now - start < it + 1: time.sleep(it + 1 - (time.time() - start)) # normalize relative to wall clock
+    print('Served ', sum(rps), ' requests over ', len(rps), ' second intervals in wall clock time: ', time.time() - start, ' seconds')
 
 if __name__=='__main__':
     generate_traffic()
