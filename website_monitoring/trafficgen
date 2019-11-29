@@ -1,0 +1,53 @@
+#!/bin/env python3
+
+import argparse
+import time
+import random
+import urllib3
+
+# Argument Parsing
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--url', help='The URL pointing to the simulated webserver.')
+    parser.add_argument('--rps', type=int, help='The desired rate at which to generate traffic to the server.')
+    parser.add_argument('--jitter', type=float, help='The RPS rate\'s variability, expressed as a percentage of the rate.')
+    parser.add_argument('--iters', type=int, help='The number of seconds to run the program (defaults to 1 hour).')
+    args = parser.parse_args()
+    # defaults + reasonable data cleaning
+    if not args.url:
+        args.url = 'http://uw1-320-13.uwb.edu:42069'
+    if not args.rps or args.rps < 1:
+        args.rps = 250
+    if not args.jitter or args.jitter <= 0 or args.jitter > 1:
+        args.jitter = 0.35
+    if not args.iters:
+        args.iters = 3600
+    print(f'Args:\tIters:\t{args.iters}\n\tRPS:\t{args.rps}')
+    return args
+
+# modulate static rate per second with jitter.
+# 
+# TODO: add shape/periodicity/behavior options
+def get_rps(rps, jitter, iters):
+    floor = rps * (1.0 - jitter)
+    ceil = rps * (1.0 + jitter)
+    return [round(random.uniform(floor, ceil)) for i in range(iters)]
+    
+def generate_traffic():
+    args = get_args()
+    rps = get_rps(args.rps, args.jitter, args.iters)
+    args = get_args()
+    rps = get_rps(args.rps, args.jitter, args.iters)
+    http = urllib3.PoolManager()
+    start = time.time()
+    # calls with sleep
+    for it in range(args.iters):
+        # TODO: get time
+        for r in range(rps[it]):
+            http.request('HEAD', args.url)
+        el = time.time() - start
+        print(f'One second\'s worth of requests: {el}')
+        time.sleep(1.0 - (time.time() % 1.0))
+
+if __name__=='__main__':
+    generate_traffic()
