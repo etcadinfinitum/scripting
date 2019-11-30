@@ -4,7 +4,7 @@ import argparse
 import time
 import random
 import urllib3
-import math.pi
+import math
 
 # Argument Parsing
 def get_args():
@@ -38,10 +38,10 @@ ceil = lambda rps, jitter: rps * (1.0 + jitter)
 # 
 # TODO: add shape/periodicity/behavior options
 def get_rps(rps, jitter, iters):
-    rps = [round(random.uniform(floor(sin(i, rps), jitter), ceil(sin(i, rps), jitter))) for i in range(iters)]
-    rps_404 = [round(rps[i] * random.uniform(0.05, 0.3)) for i in range(iters)]
-    rps_500 = [round(random.uniform(0.05,0.5) * rps[i]) for i in range(iters) if rps[i] > rps * 0.5 else random.randint(10)]
-    return rps, rps_404, rps_500
+    rps_200 = [round(random.uniform(floor(sin(i, rps), jitter), ceil(sin(i, rps), jitter))) for i in range(iters)]
+    rps_404 = [round(rps_200[i] * random.uniform(0.05, 0.3)) for i in range(iters)]
+    rps_500 = [round(rps_200[i] * random.uniform(0.05, 0.5)) if rps_200[i] > (rps * 0.5) else random.randint(0, 10) for i in range(iters)]
+    return rps_200, rps_404, rps_500
 
 def generate_traffic():
     args = get_args()
