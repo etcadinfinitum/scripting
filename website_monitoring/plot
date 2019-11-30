@@ -1,0 +1,64 @@
+#!/bin/env python3
+
+from matplotlib import pyplot as pyp
+import argparse
+
+# Argument Parsing
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--delta_t', type=int, nargs='?', default=[1])
+    parser.add_argument('--interval', type=int, help='The frequency that data was collected (every n seconds). Default is 10.')
+    args = parser.parse_args()
+    # defaults + reasonable data cleaning
+    if not args.interval or args.interval < 1:
+        args.interval = 10
+    return args
+
+# interval: the desired interval for rate averaging
+# rate:     describes the number of minutes each 
+#           discrete point averages
+def smooth_rate(rate, interval):
+    if 60 % interval != 0:
+        raise ValueError('The interval cannot be evenly converted to data per minute.')
+    points = round((rate * 60) / interval)
+    vals_200 = []
+    vals_404 = []
+    vals_500 = []
+    unix_time = []
+    with open('metrics.log', 'r') as log:
+        for linenum, line in enumerate(log.readlines()):
+            if linenum == 0: continue
+            v = line.split()
+            vals_500.append(int(v[1]))
+            vals_200.append(int(v[2]))
+            vals_404.append(int(v[3]))
+            if linenum > points:
+                unix_time.append(v[0])
+                vals_500[linenum - points - 1] = int(v[1]) - int(vals_500[linenum - points - 1])
+                vals_200[linenum - points - 1] = int(v[2]) - int(vals_200[linenum - points - 1])
+                vals_404[linenum - points - 1] = int(v[3]) - int(vals_404[linenum - points - 1])
+    # delete the items that didn't have a differential taken
+    vals_500 = vals_500[:-points]
+    vals_200 = vals_200[:-points]
+    vals_404 = vals_404[:-points]
+    vals_500 = [ v / (rate * 60) for v in vals_500 ]
+    vals_200 = [ v / (rate * 60) for v in vals_200 ]
+    vals_404 = [ v / (rate * 60) for v in vals_404 ]
+    return vals_500, vals_200, vals_404, unix_time
+
+def plot(time, vals, labels):
+    for i, v in enumerate(vals):
+        pyp.plot(time, v, label=labels[i])
+    pyp.xlabel('Time (UNIX)')
+    pyp.ylabel('Requests per second')
+    pyp.legend()
+    pyp.savefig('monitoring.png', bbox_inches='tight')
+
+def run():
+    args = get_args()
+    v_fail, v_norm, v_dead, time = smooth_rate(1, 10)
+    plot(time, [v_norm, v_dead, v_fail], ['HTTP 200 request rate (rps)', 
+            'HTTP 404 request rate (rps)', 'HTTP 500 request rate (rps)'])
+
+if __name__=='__main__':
+    run()
