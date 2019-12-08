@@ -1,0 +1,68 @@
+#!/bin/env python3
+
+import argparse
+import time
+import random
+import urllib3
+import math
+
+# Argument Parsing
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--url', help='The URL pointing to the simulated webserver.')
+    parser.add_argument('--rps', type=int, help='The desired rate at which to generate traffic to the server.')
+    parser.add_argument('--jitter', type=float, help='The RPS rate\'s variability, expressed as a percentage of the rate.')
+    parser.add_argument('--iters', type=int, help='The number of seconds to run the program (defaults to 1 hour).')
+    args = parser.parse_args()
+    # defaults + reasonable data cleaning
+    if not args.url:
+        args.url = 'http://uw1-320-13.uwb.edu:42069'
+    if not args.rps or args.rps < 1:
+        args.rps = 250
+    if not args.jitter or args.jitter <= 0 or args.jitter > 1:
+        args.jitter = 0.35
+    if not args.iters or args.iters < 1:
+        args.iters = 3600
+    print('Args:\tIters:\t', args.iters, '\n\tRPS:\t', args.rps)
+    return args
+
+# 20-minute cyclical period
+sin = lambda x, rps: (math.sin(2 * math.pi * x / 1200) * (rps * 0.4)) + rps
+floor = lambda rps, jitter: rps * (1.0 - jitter)
+ceil = lambda rps, jitter: rps * (1.0 + jitter)
+
+# modulate static rate per second with jitter.
+# we use a sine function to make the 
+# behavior periodic. 404 errors occur about 
+# 10% of the time.
+# 
+# TODO: add shape/periodicity/behavior options
+def get_rps(rps, jitter, iters):
+    rps_200 = [round(random.uniform(floor(sin(i, rps), jitter), ceil(sin(i, rps), jitter))) for i in range(iters)]
+    rps_404 = [round(rps_200[i] * random.uniform(0.05, 0.3)) for i in range(iters)]
+    rps_500 = [round(rps_200[i] * random.uniform(0.05, 0.5)) if rps_200[i] > (rps * 0.5) else random.randint(0, 10) for i in range(iters)]
+    return rps_200, rps_404, rps_500
+
+def generate_traffic():
+    args = get_args()
+    rps, rps_404, rps_500 = get_rps(args.rps, args.jitter, args.iters)
+    print(str(rps))
+    http = urllib3.PoolManager()
+    start = time.time()
+    now = start
+    # calls with sleep
+    for it in range(args.iters):
+        # 200 response
+        for r in range(rps[it]):
+            http.request('GET', args.url)
+        # 404 response
+        for r in range(rps_404[it]):
+            http.request('GET', args.url.strip('/') + '/other')
+        for r in range(rps_500[it]):
+            http.request('GET', args.url.strip('/') + '/fail')
+        now = time.time()
+        if now - start < it + 1: time.sleep(it + 1 - (time.time() - start)) # normalize relative to wall clock
+    print('Served ', sum(rps), ' requests over ', len(rps), ' second intervals in wall clock time: ', time.time() - start, ' seconds')
+
+if __name__=='__main__':
+    generate_traffic()
